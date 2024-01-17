@@ -24,7 +24,7 @@ public class RestfulWebServicesApplication {
 			@Override
  			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedMethods("*")
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 						.allowedOrigins("http://localhost:3000")
 						.allowCredentials(true);
 			}

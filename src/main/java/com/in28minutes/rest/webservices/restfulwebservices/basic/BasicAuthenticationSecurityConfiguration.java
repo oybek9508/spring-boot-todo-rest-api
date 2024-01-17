@@ -7,6 +7,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 public class BasicAuthenticationSecurityConfiguration {
@@ -19,12 +23,13 @@ public class BasicAuthenticationSecurityConfiguration {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		return 
+
+		return
 				http
 					.authorizeHttpRequests(
-						auth -> 
-							auth
+						auth ->
+							auth.requestMatchers(new AntPathRequestMatcher("/**", "OPTIONS"))
+								.permitAll()
 							.anyRequest().authenticated()
 						)
 					.httpBasic(Customizer.withDefaults())
@@ -32,7 +37,7 @@ public class BasicAuthenticationSecurityConfiguration {
 						session -> session.sessionCreationPolicy
 						(SessionCreationPolicy.STATELESS))
 					.csrf().disable()
-					.build();
+						.build();
 	}
 
 }
